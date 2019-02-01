@@ -1,0 +1,50 @@
+import cv2
+import numpy as np
+# to put the test image
+image=cv2.imread('itest.png')		
+param1 = [150,0,0]
+param2 = [255,10,10]
+param3 = [0,0,200]
+param4 = [10,10,255]
+param5 = [0,200,0]
+param6 = [0,255,0]
+		
+## while for the case of a analysing multiple frames or in the case it is the video 
+#while (1):
+
+  #cap = cv2.videocapture()
+  #ret, frame = image.imread()  ## case this is a single image
+  #ret, imaga = image.imread()
+  #ret, imagaa = image.imread()
+  lower = np.array(param1)
+  upper = np.array(param2)
+  mask = cv2.inRange(image, lower, upper)
+  kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3,3))
+  erosion = cv2.erode(mask,kernel,iterations = 3)
+  ding, contours1, hierrachy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+  cv2.drawContours(mask,contours1, -1 ,(0,255,0), 3)
+  k = len(contours1)
+  cv2.imshow('blues', erosion)
+  print 'no of blues  /n', k
+
+
+
+
+  lower1 = np.array(param3)
+  upper1 = np.array(param4)
+  mask2 = cv2.inRange(image, lower1, upper1)
+
+  ding, contours2, hierrachy = cv2.findContours(mask2, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+  cv2.drawContours(mask2,contours2, -1 ,(0,255,0), 3)
+  k2 = len(contours2)
+  print 'no of red  %r', k2
+  lower2 = np.array(param5)
+  upper2 = np.array(param6)
+  mask3 = cv2.inRange(image, lower2,upper2)
+  ding, contours3, hierrachy = cv2.findContours(mask3, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+  cv2.drawContours(mask3,contours3, -1 ,(0,255,0), 3)
+  k3 = len(contours3)
+  print 'no of greeen %r',  k3
+  if cv2.waitKey(0) == 27:
+    cap.release()
+cv2.destoyAllWindows()
